@@ -40,9 +40,8 @@
 //
 //M*/
 
-#include "precomp.hpp"
-#include "opencl_kernels.hpp"
-
+#include "../precomp.hpp"
+//#include "../opencl_kernels.hpp" //modules/core/opencl_kernels.hpp
 ///////////////////////////////// UMat implementation ///////////////////////////////
 
 namespace cv {
@@ -679,9 +678,10 @@ void UMat::copyTo(OutputArray _dst, InputArray _mask) const
         if( prevu != dst.u ) // do not leave dst uninitialized
             dst = Scalar(0);
 
-        ocl::Kernel k("copyToMask", ocl::core::copyset_oclsrc,
+        /*        ocl::Kernel k("copyToMask", ocl::core::copyset_oclsrc,
                       format("-D COPY_TO_MASK -D T=%s -D scn=%d -D mcn=%d",
                              ocl::memopTypeToStr(depth()), cn, mcn));
+
         if (!k.empty())
         {
             k.args(ocl::KernelArg::ReadOnlyNoSize(*this), ocl::KernelArg::ReadOnlyNoSize(_mask.getUMat()),
@@ -691,6 +691,7 @@ void UMat::copyTo(OutputArray _dst, InputArray _mask) const
             if (k.run(2, globalsize, NULL, false))
                 return;
         }
+        */
     }
 
     Mat src = getMat(ACCESS_READ);
@@ -722,12 +723,14 @@ void UMat::convertTo(OutputArray _dst, int _type, double alpha, double beta) con
         int wdepth = std::max(CV_32F, sdepth);
 
         char cvt[2][40];
-        ocl::Kernel k("convertTo", ocl::core::convert_oclsrc,
+        /*
+ocl::Kernel k("convertTo", ocl::core::convert_oclsrc,
                       format("-D srcT=%s -D WT=%s -D dstT=%s -D convertToWT=%s -D convertToDT=%s%s",
                              ocl::typeToStr(sdepth), ocl::typeToStr(wdepth), ocl::typeToStr(ddepth),
                              ocl::convertTypeStr(sdepth, wdepth, 1, cvt[0]),
                              ocl::convertTypeStr(wdepth, ddepth, 1, cvt[1]),
                              doubleSupport ? " -D DOUBLE_SUPPORT" : ""));
+
         if (!k.empty())
         {
             UMat src = *this;
@@ -747,6 +750,7 @@ void UMat::convertTo(OutputArray _dst, int _type, double alpha, double beta) con
             if (k.run(2, globalsize, NULL, false))
                 return;
         }
+        */
     }
 
     Mat m = getMat(ACCESS_READ);
@@ -770,7 +774,8 @@ UMat& UMat::setTo(InputArray _value, InputArray _mask)
                 ocl::memopTypeToStr(CV_MAKETYPE(tp,scalarcn)),
                 ocl::memopTypeToStr(CV_MAT_DEPTH(tp)), cn);
 
-        ocl::Kernel setK(haveMask ? "setMask" : "set", ocl::core::copyset_oclsrc, opts);
+        /*
+          ocl::Kernel setK(haveMask ? "setMask" : "set", ocl::core::copyset_oclsrc, opts);
         if( !setK.empty() )
         {
             ocl::KernelArg scalararg(0, 0, 0, 0, buf, CV_ELEM_SIZE1(tp)*scalarcn);
@@ -794,6 +799,7 @@ UMat& UMat::setTo(InputArray _value, InputArray _mask)
             if( setK.run(2, globalsize, 0, false) )
                 return *this;
         }
+        */
     }
     Mat m = getMat(haveMask ? ACCESS_RW : ACCESS_WRITE);
     m.setTo(_value, _mask);

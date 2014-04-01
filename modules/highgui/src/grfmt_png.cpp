@@ -40,9 +40,9 @@
 //
 //M*/
 
-#include "precomp.hpp"
+#include "../precomp.hpp"
 
-#ifdef HAVE_PNG
+
 
 /****************************************************************************************\
     This part of the file implements PNG codec on base of libpng library,
@@ -59,6 +59,9 @@
 #endif
 
 #ifdef HAVE_LIBPNG_PNG_H
+// if on netbsd
+//#include </sys/pkg6_amd64/include/libpng16/png.h>
+///else
 #include <libpng/png.h>
 #else
 #include <png.h>
@@ -444,6 +447,5 @@ bool  PngEncoder::write( const Mat& img, const std::vector<int>& params )
 
 }
 
-#endif
 
 /* End of file. */

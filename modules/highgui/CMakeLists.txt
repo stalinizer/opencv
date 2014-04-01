@@ -123,3 +123,5 @@ ocv_add_precompiled_headers(${the_module})
 ocv_warnings_disable(CMAKE_CXX_FLAGS -Wno-deprecated-declarations)
 
 
+ocv_add_accuracy_tests()
+ocv_add_perf_tests()

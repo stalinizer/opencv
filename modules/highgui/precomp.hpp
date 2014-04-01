@@ -7,11 +7,10 @@
 //  copy or use the software.
 //
 //
-//                           License Agreement
+//                        Intel License Agreement
 //                For Open Source Computer Vision Library
 //
-// Copyright (C) 2000-2008, Intel Corporation, all rights reserved.
-// Copyright (C) 2009, Willow Garage Inc., all rights reserved.
+// Copyright (C) 2000, Intel Corporation, all rights reserved.
 // Third party copyrights are property of their respective owners.
 //
 // Redistribution and use in source and binary forms, with or without modification,
@@ -24,7 +23,7 @@
 //     this list of conditions and the following disclaimer in the documentation
 //     and/or other materials provided with the distribution.
 //
-//   * The name of the copyright holders may not be used to endorse or promote products
+//   * The name of Intel Corporation may not be used to endorse or promote products
 //     derived from this software without specific prior written permission.
 //
 // This software is provided by the copyright holders and contributors "as is" and
@@ -40,62 +39,59 @@
 //
 //M*/
 
-#ifndef _GRFMT_PNG_H_
-#define _GRFMT_PNG_H_
+#ifndef __HIGHGUI_H_
+#define __HIGHGUI_H_
 
+#include "opencv2/highgui.hpp"
 
+#include "opencv2/core/utility.hpp"
+#include "opencv2/core/private.hpp"
 
-#include "grfmt_base.hpp"
-#include "bitstrm.hpp"
+#include "opencv2/imgproc/imgproc_c.h"
+#include "opencv2/highgui/highgui_c.h"
 
-namespace cv
-{
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <limits.h>
+#include <ctype.h>
+#include <assert.h>
 
-class PngDecoder : public BaseImageDecoder
-{
-public:
+#if defined WIN32 || defined WINCE
+    #if !defined _WIN32_WINNT
+        #ifdef HAVE_MSMF
+            #define _WIN32_WINNT 0x0600 // Windows Vista
+        #else
+            #define _WIN32_WINNT 0x0500 // Windows 2000
+        #endif
+    #endif
 
-    PngDecoder();
-    virtual ~PngDecoder();
+    #include <windows.h>
+    #undef small
+    #undef min
+    #undef max
+    #undef abs
+#endif
 
-    bool  readData( Mat& img );
-    bool  readHeader();
-    void  close();
+#ifdef HAVE_TEGRA_OPTIMIZATION
+#include "opencv2/highgui/highgui_tegra.hpp"
+#endif
 
-    ImageDecoder newDecoder() const;
+/* Errors */
+#define HG_OK          0 /* Don't bet on it! */
+#define HG_BADNAME    -1 /* Bad window or file name */
+#define HG_INITFAILED -2 /* Can't initialize HigHGUI */
+#define HG_WCFAILED   -3 /* Can't create a window */
+#define HG_NULLPTR    -4 /* The null pointer where it should not appear */
+#define HG_BADPARAM   -5
 
-protected:
+#define __BEGIN__ __CV_BEGIN__
+#define __END__  __CV_END__
+#define EXIT __CV_EXIT__
 
-    static void readDataFromBuf(void* png_ptr, uchar* dst, size_t size);
+#define CV_WINDOW_MAGIC_VAL     0x00420042
+#define CV_TRACKBAR_MAGIC_VAL   0x00420043
 
-    int   m_bit_depth;
-    void* m_png_ptr;  // pointer to decompression structure
-    void* m_info_ptr; // pointer to image information structure
-    void* m_end_info; // pointer to one more image information structure
-    FILE* m_f;
-    int   m_color_type;
-    size_t m_buf_pos;
-};
+/***************************** CvCapture structure ******************************/
 
-
-class PngEncoder : public BaseImageEncoder
-{
-public:
-    PngEncoder();
-    virtual ~PngEncoder();
-
-    bool  isFormatSupported( int depth ) const;
-    bool  write( const Mat& img, const std::vector<int>& params );
-
-    ImageEncoder newEncoder() const;
-
-protected:
-    static void writeDataToBuf(void* png_ptr, uchar* src, size_t size);
-    static void flushBuf(void* png_ptr);
-};
-
-}
-
-
-
-#endif/*_GRFMT_PNG_H_*/
+#endif /* __HIGHGUI_H_ */

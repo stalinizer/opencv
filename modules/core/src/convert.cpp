@@ -41,7 +41,8 @@
 //M*/
 
 #include "precomp.hpp"
-#include "opencl_kernels.hpp"
+#include <iostream>
+//#include "opencl_kernels.hpp"
 
 namespace cv
 {
@@ -310,9 +311,10 @@ static bool ocl_split( InputArray _m, OutputArrayOfArrays _mv )
 
 void cv::split(InputArray _m, OutputArrayOfArrays _mv)
 {
+#ifdef HAVE_OPENCL
     CV_OCL_RUN(_m.dims() <= 2 && _mv.isUMatVector(),
                ocl_split(_m, _mv))
-
+#endif
     Mat m = _m.getMat();
     if( m.empty() )
     {
@@ -349,8 +351,8 @@ void cv::merge(const Mat* mv, size_t n, OutputArray _dst)
         allch1 = allch1 && mv[i].channels() == 1;
         cn += mv[i].channels();
     }
-
-    CV_Assert( 0 < cn && cn <= CV_CN_MAX );
+    CV_Assert( 0 < cn );
+    CV_Assert( n <= CV_CN_MAX );
     _dst.create(mv[0].dims, mv[0].size, CV_MAKETYPE(depth, cn));
     Mat dst = _dst.getMat();
 
@@ -475,9 +477,10 @@ static bool ocl_merge( InputArrayOfArrays _mv, OutputArray _dst )
 
 void cv::merge(InputArrayOfArrays _mv, OutputArray _dst)
 {
+#ifdef HAVE_OPENCL
     CV_OCL_RUN(_mv.isUMatVector() && _dst.isUMat(),
                ocl_merge(_mv, _dst))
-
+#endif
     std::vector<Mat> mv;
     _mv.getMatVector(mv);
     merge(!mv.empty() ? &mv[0] : 0, mv.size(), _dst);
@@ -567,13 +570,24 @@ static MixChannelsFunc getMixchFunc(int depth)
 
 }
 
+/**
+   Source Matricies :
+   const Mat* src, size_t nsrcs, 
+
+   Destination matricies
+   Mat* dst, size_t ndsts, 
+
+   From to mapping
+   const int* fromTo, size_t npairs
+ **/
 void cv::mixChannels( const Mat* src, size_t nsrcs, Mat* dst, size_t ndsts, const int* fromTo, size_t npairs )
 {
     if( npairs == 0 )
         return;
     CV_Assert( src && nsrcs > 0 && dst && ndsts > 0 && fromTo && npairs > 0 );
 
-    size_t i, j, k, esz1 = dst[0].elemSize1();
+    size_t i =0, j=0, k=0;
+    size_t esz1 = dst[0].elemSize1();
     int depth = dst[0].depth();
 
     AutoBuffer<uchar> buf((nsrcs + ndsts + 1)*(sizeof(Mat*) + sizeof(uchar*)) + npairs*(sizeof(uchar*)*2 + sizeof(int)*6));
@@ -586,19 +600,37 @@ void cv::mixChannels( const Mat* src, size_t nsrcs, Mat* dst, size_t ndsts, cons
 
     for( i = 0; i < nsrcs; i++ )
         arrays[i] = &src[i];
+
+    // append the destination matricies at the end
     for( i = 0; i < ndsts; i++ )
         arrays[i + nsrcs] = &dst[i];
+
     ptrs[nsrcs + ndsts] = 0;
 
+    // for each pair
     for( i = 0; i < npairs; i++ )
     {
         int i0 = fromTo[i*2], i1 = fromTo[i*2+1];
-        if( i0 >= 0 )
+        std::cout << "pair i :" << i << std::endl;
+        std::cout << "i0 :" << i0 << std::endl;
+        std::cout << "i1 :" << i1 << std::endl;
+
+        if( i0 >= 0 ) // from channel is greater than 0 
         {
             for( j = 0; j < nsrcs; i0 -= src[j].channels(), j++ )
                 if( i0 < src[j].channels() )
                     break;
-            CV_Assert(j < nsrcs && src[j].depth() == depth);
+
+            int n_depth = src[j].depth();
+            std::cout << "j :" << j << std::endl;
+            std::cout << "nsrcs :" << nsrcs << std::endl;
+            CV_Assert(j < nsrcs);
+
+            std::cout << "depth :" << depth << std::endl;
+            std::cout << "ndepth :" << n_depth << std::endl;
+
+            CV_Assert(n_depth == depth);
+
             tab[i*4] = (int)j; tab[i*4+1] = (int)(i0*esz1);
             sdelta[i] = src[j].channels();
         }
@@ -608,10 +640,26 @@ void cv::mixChannels( const Mat* src, size_t nsrcs, Mat* dst, size_t ndsts, cons
             sdelta[i] = 0;
         }
 
-        for( j = 0; j < ndsts; i1 -= dst[j].channels(), j++ )
-            if( i1 < dst[j].channels() )
-                break;
-        CV_Assert(i1 >= 0 && j < ndsts && dst[j].depth() == depth);
+        for( j = 0; j < ndsts; i1 -= dst[j].channels(), j++ ) {
+          int d_channels = dst[j].channels();
+          std::cout << "check d_channels :" << d_channels << std::endl;
+          std::cout << "check i1 :" << i1 << std::endl;
+          
+          if( i1 < d_channels )
+            break;          
+        }  
+
+        std::cout << "i1 :" << i1 << std::endl;
+        CV_Assert(i1 >= 0 );
+
+        std::cout << "j :" << j << std::endl;
+        std::cout << "ndsts :" << ndsts << std::endl;
+        CV_Assert(j < ndsts);
+
+        int n_depth = dst[j].depth();        
+        std::cout << "ndepth :" << n_depth << std::endl;
+        CV_Assert(n_depth == depth);
+
         tab[i*4+2] = (int)(j + nsrcs); tab[i*4+3] = (int)(i1*esz1);
         ddelta[i] = dst[j].channels();
     }
@@ -743,9 +791,10 @@ void cv::mixChannels(InputArrayOfArrays src, InputOutputArrayOfArrays dst,
     if (npairs == 0 || fromTo == NULL)
         return;
 
+#ifdef HAVE_OPENCL
     CV_OCL_RUN(dst.isUMatVector(),
                ocl_mixChannels(src, dst, fromTo, npairs))
-
+#endif
     bool src_is_mat = src.kind() != _InputArray::STD_VECTOR_MAT &&
             src.kind() != _InputArray::STD_VECTOR_VECTOR &&
             src.kind() != _InputArray::STD_VECTOR_UMAT;
@@ -772,9 +821,10 @@ void cv::mixChannels(InputArrayOfArrays src, InputOutputArrayOfArrays dst,
     if (fromTo.empty())
         return;
 
+#ifdef HAVE_OPENCL
     CV_OCL_RUN(dst.isUMatVector(),
                ocl_mixChannels(src, dst, &fromTo[0], fromTo.size()>>1))
-
+#endif
     bool src_is_mat = src.kind() != _InputArray::STD_VECTOR_MAT &&
             src.kind() != _InputArray::STD_VECTOR_VECTOR &&
             src.kind() != _InputArray::STD_VECTOR_UMAT;
@@ -1366,9 +1416,10 @@ static bool ocl_convertScaleAbs( InputArray _src, OutputArray _dst, double alpha
 
 void cv::convertScaleAbs( InputArray _src, OutputArray _dst, double alpha, double beta )
 {
+#ifdef HAVE_OPENCL
     CV_OCL_RUN(_src.dims() <= 2 && _dst.isUMat(),
                ocl_convertScaleAbs(_src, _dst, alpha, beta))
-
+#endif
     Mat src = _src.getMat();
     int cn = src.channels();
     double scale[] = {alpha, beta};
@@ -1540,9 +1591,10 @@ void cv::LUT( InputArray _src, InputArray _lut, OutputArray _dst )
         _lut.total() == 256 && _lut.isContinuous() &&
         (depth == CV_8U || depth == CV_8S) );
 
+#ifdef HAVE_OPENCL
     CV_OCL_RUN(_dst.isUMat() && _src.dims() <= 2,
                ocl_LUT(_src, _lut, _dst))
-
+#endif
     Mat src = _src.getMat(), lut = _lut.getMat();
     _dst.create(src.dims, src.size, CV_MAKETYPE(_lut.depth(), cn));
     Mat dst = _dst.getMat();
@@ -1610,9 +1662,10 @@ void cv::normalize( InputArray _src, OutputArray _dst, double a, double b,
         rtype = _dst.fixedType() ? _dst.depth() : depth;
     _dst.createSameSize(_src, CV_MAKETYPE(rtype, cn));
 
+#ifdef HAVE_OPENCL
     CV_OCL_RUN(_dst.isUMat(),
                ocl_normalize(_src, _dst, _mask, rtype, scale, shift))
-
+#endif
     Mat src = _src.getMat(), dst = _dst.getMat();
     if( _mask.empty() )
         src.convertTo( dst, rtype, scale, shift );

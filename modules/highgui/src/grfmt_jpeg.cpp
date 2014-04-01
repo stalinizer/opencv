@@ -39,10 +39,10 @@
 //
 //M*/
 
-#include "precomp.hpp"
+#include "../precomp.hpp"
 #include "grfmt_jpeg.hpp"
 
-#ifdef HAVE_JPEG
+
 
 #ifdef _MSC_VER
 //interaction between '_setjmp' and C++ object destruction is non-portable
@@ -72,6 +72,7 @@ typedef unsigned char boolean;
 #undef TRUE
 
 extern "C" {
+  // if on netbsd #include "/sys/pkg6_amd64/include/jpeglib.h"
 #include "jpeglib.h"
 }
 
@@ -671,6 +672,5 @@ _exit_:
 
 }
 
-#endif
 
 /* End of file. */
