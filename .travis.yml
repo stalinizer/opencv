@@ -7,5 +7,3 @@ compiler:
 script:
 - cmake CMakeLists.txt
 - make
-#notifications:
-#email: false
