@@ -80,10 +80,10 @@
 /* #undef HAVE_GSTREAMER */
 
 /* GTK+ 2.0 Thread support */
-/* #undef HAVE_GTHREAD */
+#define HAVE_GTHREAD
 
 /* GTK+ 2.x toolkit */
-/* #undef HAVE_GTK */
+#define HAVE_GTK
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 /* #undef HAVE_INTTYPES_H */
@@ -95,16 +95,16 @@
 /* #undef HAVE_IPP */
 
 /* JPEG-2000 codec */
-/* #undef HAVE_JASPER */
+#define HAVE_JASPER
 
 /* IJG JPEG codec */
-/* #undef HAVE_JPEG */
+#define HAVE_JPEG
 
 /* libpng/png.h needs to be included */
 #define HAVE_LIBPNG_PNG_H
 
 /* V4L/V4L2 capturing support via libv4l */
-/* #undef HAVE_LIBV4L */
+#define HAVE_LIBV4L
 
 /* Microsoft Media Foundation Capture library */
 /* #undef HAVE_MSMF */
@@ -113,11 +113,11 @@
 /* #undef HAVE_NVCUVID */
 
 /* OpenCL Support */
-/* #undef HAVE_OPENCL */
+#define HAVE_OPENCL
 /* #undef HAVE_OPENCL_STATIC */
 
 /* OpenEXR codec */
-/* #undef HAVE_OPENEXR */
+#define HAVE_OPENEXR
 
 /* OpenGL support*/
 /* #undef HAVE_OPENGL */
@@ -126,7 +126,7 @@
 /* #undef HAVE_OPENNI */
 
 /* PNG codec */
-/* #undef HAVE_PNG */
+#define HAVE_PNG
 
 /* Qt support */
 /* #undef HAVE_QT */
@@ -144,7 +144,7 @@
 /* #undef HAVE_TBB */
 
 /* TIFF codec */
-/* #undef HAVE_TIFF */
+#define HAVE_TIFF
 
 /* Unicap video capture library */
 /* #undef HAVE_UNICAP */
