@@ -2,8 +2,8 @@ language: cpp
 compiler:
 - clang
 - gcc
-#before_install:
-#- sudo apt-get install -q -y libgl1-mesa-dev libglu1-mesa-dev x11proto-xf86vidmode-dev xorg-dev mesa-common-dev
+before_install:
+- sudo apt-get install -q -y libv4l-dev
 script:
-- dpkg-buildpackage -uc -us
+- dpkg-buildpackage -b -uc -us
 

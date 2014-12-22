@@ -1,9 +1,8 @@
 Source: opencv
 Priority: optional
 Section: devel
-Maintainer: Debian Science Team <debian-science-maintainers@lists.alioth.debian.org>
-Uploaders: Sam Hocevar (Debian packages) <sam+deb@zoy.org>,
-		Nobuhiro Iwamatsu <iwamatsu@debian.org>
+Maintainer: James Michael DuPont <mdupont@stalinizer.com>
+Uploaders: James Michael DuPont <mdupont@stalinizer.com>
 Build-Depends: debhelper (>= 9),
  cmake (>= 2.8.7),
   libgtk2.0-dev, 
@@ -14,14 +13,10 @@ Build-Depends: debhelper (>= 9),
  libtiff-dev,
  libv4l-dev [linux-any],
  zlib1g-dev (>= 1.2.5),
- python-dev,
- dh-python,
- python-numpy,
- python-sphinx
 Standards-Version: 3.9.5
-Vcs-Git: git://anonscm.debian.org/debian-science/packages/opencv.git
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=debian-science/packages/opencv.git;a=summary
-Homepage: http://opencv.org/
+Vcs-Git: git://git@github.com:stalinizer/opencv.git
+Vcs-Browser: http://github.com/stalinizer/opencv
+Homepage: http://github.com/stalinizer/opencv
 
 Package: opencv-doc
 Section: doc

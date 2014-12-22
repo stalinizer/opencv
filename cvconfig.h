@@ -20,7 +20,7 @@
 /* #undef HAVE_CAMV4L */
 
 /* V4L2 capturing support */
-/* #undef HAVE_CAMV4L2 */
+#define HAVE_CAMV4L2
 
 /* Carbon windowing environment */
 /* #undef HAVE_CARBON */
@@ -101,7 +101,7 @@
 /* #undef HAVE_JPEG */
 
 /* libpng/png.h needs to be included */
-/* #undef HAVE_LIBPNG_PNG_H */
+#define HAVE_LIBPNG_PNG_H
 
 /* V4L/V4L2 capturing support via libv4l */
 /* #undef HAVE_LIBV4L */
