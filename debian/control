@@ -6,28 +6,18 @@ Uploaders: Sam Hocevar (Debian packages) <sam+deb@zoy.org>,
 		Nobuhiro Iwamatsu <iwamatsu@debian.org>
 Build-Depends: debhelper (>= 9),
  cmake (>= 2.8.7),
- libavcodec-dev, libavformat-dev, libswscale-dev, libgtk2.0-dev, libgtkglext1-dev,
+  libgtk2.0-dev, 
  libgl1-mesa-dev, libglu1-mesa-dev,
  libjasper-dev (>= 1.900.1),
  libjpeg-dev,
  libpng-dev,
  libtiff-dev,
- libopenexr-dev (>= 1.4.0),
- libraw1394-dev [linux-any],
- libdc1394-22-dev [linux-any],
  libv4l-dev [linux-any],
  zlib1g-dev (>= 1.2.5),
- liblapack-dev (>= 3.2.1),
- libtbb-dev [i386 amd64 ia64 powerpc ppc64 ppc64el],
- libeigen3-dev,
- ocl-icd-opencl-dev,
  python-dev,
  dh-python,
  python-numpy,
- python-sphinx,
- ant, default-jdk, javahelper,
- texlive-fonts-extra, texlive-latex-extra, texlive-latex-recommended,
- latex-xcolor, texlive-fonts-recommended
+ python-sphinx
 Standards-Version: 3.9.5
 Vcs-Git: git://anonscm.debian.org/debian-science/packages/opencv.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=debian-science/packages/opencv.git;a=summary
@@ -226,7 +216,6 @@ Depends: ${misc:Depends}, ${shlibs:Depends},
 	libopencv-gpu-dev (= ${binary:Version}),
 	libopencv-superres-dev (= ${binary:Version}),
 	libopencv-ocl-dev (= ${binary:Version}),
-	libopencv2.4-java (= ${source:Version}),
 	libopencv2.4-jni (= ${binary:Version}),
 	libcv-dev (= ${binary:Version}),
 	libhighgui-dev (= ${binary:Version}),
@@ -481,17 +470,11 @@ Multi-Arch: same
 Depends: ${misc:Depends},
 	libopencv-imgproc-dev (= ${binary:Version}),
 	libopencv-highgui2.4 (= ${binary:Version}),
-	libavcodec-dev (>= 0.svn20080206),
-	libavformat-dev,
-	libswscale-dev,
 	libgtk2.0-dev,
 	libjasper-dev (>= 1.900.1),
 	libjpeg-dev,
 	libpng-dev,
-	libtiff-dev,
-	libopenexr-dev (>= 1.4.0),
-	libraw1394-dev [!kfreebsd-amd64 !kfreebsd-i386 !hurd-i386],
-	libdc1394-22-dev [!kfreebsd-amd64 !kfreebsd-i386 !hurd-i386]
+	libtiff-dev
 Description: development files for libopencv-highgui
  This package contains the header files and static library needed to compile
  applications that use OpenCV (Open Computer Vision) High-level GUI and
@@ -1073,69 +1056,4 @@ Description: computer vision OpenCL support library
  analysis, structural analysis, motion analysis and object tracking, object
  recognition, camera calibration and 3D reconstruction.
 
-Package: libopencv2.4-java
-Section: java
-Architecture: all
-Depends: ${java:Depends}, ${misc:Depends},
-	libopencv2.4-jni (>= ${source:Version})
-Recommends: ${java:Recommends}
-Description: Java bindings for the computer vision library
- This package contains Java bindings for the OpenCV (Open Computer Vision)
- library.
- .
- The Open Computer Vision Library is a collection of algorithms and sample
- code for various computer vision problems. The library is compatible with
- IPL (Intel's Image Processing Library) and, if available, can use IPP
- (Intel's Integrated Performance Primitives) for better performance.
- .
- OpenCV provides low level portable data types and operators, and a set
- of high level functionalities for video acquisition, image processing and
- analysis, structural analysis, motion analysis and object tracking, object
- recognition, camera calibration and 3D reconstruction.
-
-Package: libopencv2.4-jni
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
-	libopencv-calib3d2.4 (= ${binary:Version}),
-	libopencv-ml2.4 (= ${binary:Version}),
-	libopencv-objdetect2.4 (= ${binary:Version}),
-	libopencv-highgui2.4 (= ${binary:Version}),
-	libopencv-video2.4 (= ${binary:Version}),
-	libopencv-contrib2.4 (= ${binary:Version}),
-	libopencv-photo2.4 (= ${binary:Version})
-Description: Java jni library for the computer vision library
- This package contains Java jni library for the OpenCV (Open Computer Vision)
- library.
- .
- The Open Computer Vision Library is a collection of algorithms and sample
- code for various computer vision problems. The library is compatible with
- IPL (Intel's Image Processing Library) and, if available, can use IPP
- (Intel's Integrated Performance Primitives) for better performance.
- .
- OpenCV provides low level portable data types and operators, and a set
- of high level functionalities for video acquisition, image processing and
- analysis, structural analysis, motion analysis and object tracking, object
- recognition, camera calibration and 3D reconstruction.
-
-Package: python-opencv
-Section: python
-Architecture: any
-Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}, python-numpy-abi9,
-		python-numpy (>= 1:1.6.1)
-Provides: ${python:Provides}
-Replaces: python2.3-opencv (<= 0.9.7-3)
-Conflicts: python2.3-opencv (<= 0.9.7-3)
-Description: Python bindings for the computer vision library
- This package contains Python bindings for the OpenCV (Open Computer Vision)
- library.
- .
- The Open Computer Vision Library is a collection of algorithms and sample
- code for various computer vision problems. The library is compatible with
- IPL (Intel's Image Processing Library) and, if available, can use IPP
- (Intel's Integrated Performance Primitives) for better performance.
- .
- OpenCV provides low level portable data types and operators, and a set
- of high level functionalities for video acquisition, image processing and
- analysis, structural analysis, motion analysis and object tracking, object
- recognition, camera calibration and 3D reconstruction.
 
