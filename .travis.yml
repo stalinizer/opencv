@@ -5,5 +5,5 @@ compiler:
 #before_install:
 #- sudo apt-get install -q -y libgl1-mesa-dev libglu1-mesa-dev x11proto-xf86vidmode-dev xorg-dev mesa-common-dev
 script:
-- cmake CMakeLists.txt
-- make
+- dpkg-buildpackage -uc -us
+
