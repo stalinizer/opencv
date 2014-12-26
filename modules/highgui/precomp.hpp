@@ -93,6 +93,10 @@
 #define CV_TRACKBAR_MAGIC_VAL   0x00420043
 
 /***************************** CvCapture structure ******************************/
+enum
+  {
+    CV_CAP_ANY      =0,     // autodetect
+  };
 
 struct CvCapture
 {
