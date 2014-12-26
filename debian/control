@@ -5,37 +5,19 @@ Maintainer: James Michael DuPont <mdupont@stalinizer.com>
 Uploaders: James Michael DuPont <mdupont@stalinizer.com>
 Build-Depends: debhelper (>= 9),
  cmake (>= 2.8.7),
-  libgtk2.0-dev, 
- libgl1-mesa-dev, libglu1-mesa-dev,
- libjasper-dev (>= 1.900.1),
  libjpeg-dev,
  libpng-dev,
  libtiff-dev,
- libv4l-dev [linux-any],
  zlib1g-dev (>= 1.2.5),
+Recommends: libgtk2.0-dev, 
+ libgl1-mesa-dev, libglu1-mesa-dev,
+ libjasper-dev (>= 1.900.1),
+ libv4l-dev [linux-any],
 Standards-Version: 3.9.5
 Vcs-Git: git://git@github.com:stalinizer/opencv.git
 Vcs-Browser: http://github.com/stalinizer/opencv
 Homepage: http://github.com/stalinizer/opencv
 
-Package: opencv-doc
-Section: doc
-Architecture: all
-Depends: ${misc:Depends}
-Conflicts: libopencv-doc
-Replaces: libopencv-doc
-Description: OpenCV documentation and examples
- This package contains the OpenCV documentation and example programs.
- .
- The Open Computer Vision Library is a collection of algorithms and sample
- code for various computer vision problems. The library is compatible with
- IPL (Intel's Image Processing Library) and, if available, can use IPP
- (Intel's Integrated Performance Primitives) for better performance.
- .
- OpenCV provides low level portable data types and operators, and a set
- of high level functionalities for video acquisition, image processing and
- analysis, structural analysis, motion analysis and object tracking, object
- recognition, camera calibration and 3D reconstruction.
 
 Package: libcv-dev
 Section: libdevel
@@ -458,54 +440,6 @@ Description: computer vision Object Detection library
  analysis, structural analysis, motion analysis and object tracking, object
  recognition, camera calibration and 3D reconstruction.
 
-Package: libopencv-highgui-dev
-Section: libdevel
-Architecture: any
-Multi-Arch: same
-Depends: ${misc:Depends},
-	libopencv-imgproc-dev (= ${binary:Version}),
-	libopencv-highgui2.4 (= ${binary:Version}),
-	libgtk2.0-dev,
-	libjasper-dev (>= 1.900.1),
-	libjpeg-dev,
-	libpng-dev,
-	libtiff-dev
-Description: development files for libopencv-highgui
- This package contains the header files and static library needed to compile
- applications that use OpenCV (Open Computer Vision) High-level GUI and
- Media I/O library.
- .
- The Open Computer Vision Library is a collection of algorithms and sample
- code for various computer vision problems. The library is compatible with
- IPL (Intel's Image Processing Library) and, if available, can use IPP
- (Intel's Integrated Performance Primitives) for better performance.
- .
- OpenCV provides low level portable data types and operators, and a set
- of high level functionalities for video acquisition, image processing and
- analysis, structural analysis, motion analysis and object tracking, object
- recognition, camera calibration and 3D reconstruction.
-
-Package: libopencv-highgui2.4
-Section: libs
-Architecture: any
-Multi-Arch: same
-Pre-Depends: ${misc:Pre-Depends}
-Depends: ${misc:Depends},
-	${shlibs:Depends},
-	libopencv-imgproc2.4 (= ${binary:Version})
-Description: computer vision High-level GUI and Media I/O library
- This package contains the OpenCV (Open Computer Vision) High-level GUI
- and Media I/O runtime libraries.
- .
- The Open Computer Vision Library is a collection of algorithms and sample
- code for various computer vision problems. The library is compatible with
- IPL (Intel's Image Processing Library) and, if available, can use IPP
- (Intel's Integrated Performance Primitives) for better performance.
- .
- OpenCV provides low level portable data types and operators, and a set
- of high level functionalities for video acquisition, image processing and
- analysis, structural analysis, motion analysis and object tracking, object
- recognition, camera calibration and 3D reconstruction.
 
 Package: libopencv-calib3d-dev
 Section: libdevel
