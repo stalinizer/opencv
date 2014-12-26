@@ -3,6 +3,14 @@
 this version is for embedded systems that are limited in size. Mainly for face
 recognition and all other functions are stripped out.
 
+#### Installation from debian wheezy
+
+    apt-get install git dpkg-dev
+    git clone git@github.com:stalinizer/opencv.git
+    cd opencv 
+    dpkg-buildpackage -nc -uc -b
+    apt-get install debhelper cmake libjpeg-dev libpng-dev libtiff-dev zlib1g-dev
+
 #### Resources
 
 * Homepage: <https://github.com/stalinizer/opencv>
