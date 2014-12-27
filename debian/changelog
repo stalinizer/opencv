@@ -1,3 +1,9 @@
+opencv (2.5) unstable; urgency=medium
+
+  * Hacked version
+
+ -- James Michael DuPont <jamesmikedupont@googlemail.org>  Sat, 27 Dec 2014 14:34:34 -0600
+
 opencv (2.4.9.1+dfsg-1) unstable; urgency=medium
 
   * New upstream release.
