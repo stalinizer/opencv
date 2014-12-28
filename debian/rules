@@ -56,9 +56,10 @@ CMAKE_FLAGS = \
 	-DBUILD_TESTS=OFF \
 	-DCMAKE_SKIP_RPATH=ON \
 	-DWITH_CUDA=OFF \
+	-DBUILD_SHARED_LIBS:BOOL=OFF  \
 	$(CMAKE_ARCH_FLAGS)
 # -DOPENCL_INCLUDE_DIR:PATH="/usr/include/CL/"
-
+# static build
 %:
 	dh $@ --buildsystem=cmake 
 
@@ -71,13 +72,13 @@ override_dh_clean:
 override_dh_auto_configure:
 	dh_auto_configure -- $(CMAKE_FLAGS)
 
-#override_dh_install:
+override_dh_install:
 #	#-rm --verbose -rf debian/tmp/usr/share/opencv/samples/octave
 #	#-rm --verbose -rf debian/tmp/usr/share/opencv/samples/c/cvsample.dsp
 #	#-rm --verbose -rf debian/tmp/usr/share/OpenCV/doc/license.txt
 #	#for f in $$(ls obj-*/lib/libopencv_*_s.a); do \
 #	#	cp --verbose --preserve=mode $$f debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/$$(basename $$f _s.a).a; done
-#	#dh_install -O--buildsystem=cmake --list-missing
+	dh_install -O--buildsystem=cmake --list-missing
 
 
 #override_dh_fixperms-indep:
