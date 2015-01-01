@@ -8,6 +8,7 @@ Build-Depends: debhelper (>= 9),
  libjpeg-dev,
  libpng-dev,
  libtiff-dev,
+ pkg-config,
  zlib1g-dev (>= 1.2.5),
 Standards-Version: 3.9.5
 Vcs-Git: git://git@github.com:stalinizer/opencv.git
@@ -20,9 +21,6 @@ Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends},
-	libcv-dev (= ${binary:Version}),
-	libcvaux-dev (= ${binary:Version}),
-	libhighgui-dev (= ${binary:Version}),
 	pkg-config,
 	zlib1g-dev
 Description: Hacks for opencv
